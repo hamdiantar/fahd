@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printing Cost and Profit Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: white;
+        }
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .header-container img {
+            height: 150px;
+            margin-right: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            height: 160px; /* Fixed height */
+            display: flex;
+            align-items: center;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        .card-text {
+            font-size: 1rem;
+            color: #fff;
+        }
+        .card i {
+            font-size: 3rem;
+            margin-right: 15px;
+            color:white;
+        }
+        .bg-primary {
+            background-color: #8ebeff  !important;
+        }
+        .bg-secondary {
+            background-color: #6c757d !important;
+        }
+        .bg-success {
+            background-color: #28a745 !important;
+        }
+        .bg-warning {
+            background-color: #ffc107 !important;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .form-control {
+            border-radius: 8px;
+        }
+        .btn-primary, .btn-danger {
+            border-radius: 8px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        .scenario-box {
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+            canvas {
+                height: 350px !important;
+                /* border: 1px solid red; */
+                padding: 10px;
+                box-shadow: 0px 0px 7px 3px #908b8b;
+                border-radius: 9px;
+                width: 100% !important;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container my-4">
+    <div class="header-container">
+        <img src="logo.jpeg" alt="Logo"> <!-- Replace 'your-logo-url-here.png' with your logo URL -->
+        <h1>Printing Cost and Profit Analysis</h1>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row my-4 mb-5">
+        <div class="col-12 col-md-4">
+            <canvas id="chart1"></canvas>
+        </div>
+        <div class="col-12 col-md-4">
+            <canvas id="chart2"></canvas>
+        </div>
+        <div class="col-12 col-md-4">
+            <canvas id="chart3"></canvas>
+        </div>
+    </div>
+
+    <!-- Fixed Costs Section -->
+    <div class="row my-4 mt-5">
+        <div class="col-md-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-tint"></i>
+                    <div>
+                        <h5 class="card-title">Black and White Ink Price</h5>
+                        <p class="card-text">655 SAR‏</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-paint-brush"></i>
+                    <div>
+                        <h5 class="card-title">Colored Ink Price</h5>
+                        <p class="card-text">828 SAR‏</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                        <h5 class="card-title">Cost of a Ream of Paper</h5>
+                        <p class="card-text">20 SAR‏</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-print"></i>
+                    <div>
+                        <h5 class="card-title">Black and White Ink Coverage</h5>
+                        <p class="card-text">5500 Sheets</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mt-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-fill-drip"></i>
+                    <div>
+                        <h5 class="card-title">Colored Ink Coverage</h5>
+                        <p class="card-text">4500 Sheets</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                        <h5 class="card-title">Fixed Cost Scenario 1</h5>
+                        <p class="card-text">100 SAR‏</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                        <h5 class="card-title">Fixed Cost Scenario 2</h5>
+                        <p class="card-text">150 SAR‏</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-3">
+            <div class="card bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                        <h5 class="card-title">Fixed Cost Scenario 3</h5>
+                        <p class="card-text">200 SAR‏</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scenarios Table -->
+    <div class="table-responsive my-4">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th>Scenario</th>
+                <th>Total Sheets Printed</th>
+                <th>BW Sheets Printed</th>
+                <th>Color Sheets Printed</th>
+                <th>BW Price/Sheet</th>
+                <th>Color Price/Sheet</th>
+                <th>Total Revenue</th>
+                <th>Profit (Cost 1)</th>
+                <th>Profit (Cost 2)</th>
+                <th>Profit (Cost 3)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="scenariosTableBody">
+            <!-- Scenario rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- New Scenario Form -->
+    <div class="scenario-box mx-auto">
+        <h3 class="text-center">Add New Scenario</h3>
+        <form id="newScenarioForm">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="totalSheets" class="form-label">Total Sheets Printed</label>
+                    <input type="number" class="form-control" id="totalSheets" name="totalSheets" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="bwSheets" class="form-label">BW Sheets Printed</label>
+                    <input type="number" class="form-control" id="bwSheets" name="bwSheets" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="colorSheets" class="form-label">Color Sheets Printed</label>
+                    <input type="number" class="form-control" id="colorSheets" name="colorSheets" required>
+                </div>
+            </div>
+            <div class="error text-center" id="errorMessage"></div>
+            <button type="button" class="btn btn-primary w-25 mb-3 mt-5" onclick="addNewScenario()">Add Scenario</button>
+<!--            <button type="button" class="btn btn-danger w-100" onclick="deleteAllScenarios()">Delete All Scenarios</button>-->
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+    const scenarios = JSON.parse(localStorage.getItem('scenarios')) || [
+        {
+            scenario: 1,
+            totalSheets: 125,
+            bwSheets: 100,
+            colorSheets: 25,
+            bwPricePerSheet: 0.175,
+            colorPricePerSheet: 0.5,
+            totalRevenue: 30.00,
+            profit1: -70.00,
+            profit2: -120,
+            profit3: -170,
+            deletable: false
+        },
+        {
+            scenario: 2,
+            totalSheets: 250,
+            bwSheets: 200,
+            colorSheets: 50,
+            bwPricePerSheet: 0.25,
+            colorPricePerSheet: 0.75,
+            totalRevenue: 87.5,
+            profit1: -12.5,
+            profit2: -62.5,
+            profit3: -112.5,
+            deletable: false
+        },
+        {
+            scenario: 3,
+            totalSheets: 375,
+            bwSheets: 300,
+            colorSheets: 75,
+            bwPricePerSheet: 0.333,
+            colorPricePerSheet: 1.15,
+            totalRevenue: 186.15,
+            profit1: 86.15,
+            profit2: 36.15,
+            profit3: -13.85,
+            deletable: false
+        }
+    ];
+
+    function renderTable() {
+        const tableBody = document.getElementById('scenariosTableBody');
+        tableBody.innerHTML = '';
+        scenarios.forEach((scenario, index) => {
+            const row = `<tr>
+                    <td>${scenario.scenario}</td>
+                    <td>${scenario.totalSheets}</td>
+                    <td>${scenario.bwSheets}</td>
+                    <td>${scenario.colorSheets}</td>
+                    <td>${scenario.bwPricePerSheet}</td>
+                    <td>${scenario.colorPricePerSheet}</td>
+                    <td>${scenario.totalRevenue} SAR‏</td>
+                    <td>${scenario.profit1} SAR‏</td>
+                    <td>${scenario.profit2}</td>
+                    <td>${scenario.profit3}</td>
+                    <td>${scenario.deletable ? `<button class="btn btn-danger btn-sm" onclick="deleteScenario(${index})"><i class="fas fa-trash-alt"></i></button>` : ''}</td>
+                </tr>`;
+            tableBody.insertAdjacentHTML('beforeend', row);
+        });
+    }
+
+    function addNewScenario() {
+        const totalSheets = parseInt(document.getElementById('totalSheets').value);
+        const bwSheets = parseInt(document.getElementById('bwSheets').value);
+        const colorSheets = parseInt(document.getElementById('colorSheets').value);
+
+        // Validate that totalSheets equals the sum of bwSheets and colorSheets
+        if (totalSheets !== bwSheets + colorSheets) {
+            document.getElementById('errorMessage').textContent = 'Total Sheets Printed must equal the sum of BW Sheets Printed and Color Sheets Printed.';
+            return;
+        }
+
+        // Clear the error message
+        document.getElementById('errorMessage').textContent = '';
+
+        // Calculating hypothetical values based on existing logic
+        const bwPricePerSheet = (655 / 5500) + (20 / 500); // Adjusted for your data
+        const colorPricePerSheet = (828 / 4500) + (20 / 500); // Adjusted for your data
+        const totalRevenue = (bwPricePerSheet * bwSheets) + (colorPricePerSheet * colorSheets);
+        const profit1 = totalRevenue - 100;
+        const profit2 = totalRevenue - 150;
+        const profit3 = totalRevenue - 200;
+
+        const newScenario = {
+            scenario: scenarios.length + 1,
+            totalSheets,
+            bwSheets,
+            colorSheets,
+            bwPricePerSheet: bwPricePerSheet.toFixed(3),
+            colorPricePerSheet: colorPricePerSheet.toFixed(3),
+            totalRevenue: totalRevenue.toFixed(2),
+            profit1: profit1.toFixed(2),
+            profit2: profit2.toFixed(2),
+            profit3: profit3.toFixed(2),
+            deletable: true
+        };
+
+        scenarios.push(newScenario);
+        localStorage.setItem('scenarios', JSON.stringify(scenarios));
+        renderTable();
+        updateCharts();
+        document.getElementById('newScenarioForm').reset();
+    }
+
+    function deleteScenario(index) {
+        if (scenarios[index].deletable) {
+            scenarios.splice(index, 1);
+            localStorage.setItem('scenarios', JSON.stringify(scenarios));
+            renderTable();
+            updateCharts();
+        }
+    }
+
+    function deleteAllScenarios() {
+        const nonDeletableScenarios = scenarios.filter(scenario => !scenario.deletable);
+        localStorage.setItem('scenarios', JSON.stringify(nonDeletableScenarios));
+        location.reload();
+    }
+
+    function updateCharts() {
+        chart1.data.labels = scenarios.map(s => `Scenario ${s.scenario}`);
+        chart1.data.datasets[0].data = scenarios.map(s => s.totalRevenue);
+        chart1.update();
+
+        chart2.data.labels = scenarios.map(s => `Scenario ${s.scenario}`);
+        chart2.data.datasets[0].data = scenarios.map(s => s.profit1);
+        chart2.update();
+
+        chart3.data.labels = scenarios.map(s => `Scenario ${s.scenario}`);
+        chart3.data.datasets[0].data = scenarios.map(s => s.profit3);
+        chart3.update();
+    }
+
+    renderTable();
+
+    // Updating Charts
+    const ctx1 = document.getElementById('chart1').getContext('2d');
+    const chart1 = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: scenarios.map(s => `Scenario ${s.scenario}`),
+            datasets: [{
+                label: 'Total Revenue (SAR‏)',
+                data: scenarios.map(s => s.totalRevenue),
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const ctx2 = document.getElementById('chart2').getContext('2d');
+    const chart2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: scenarios.map(s => `Scenario ${s.scenario}`),
+            datasets: [{
+                label: 'Profit (Cost 1) (SAR‏)',
+                data: scenarios.map(s => s.profit1),
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const ctx3 = document.getElementById('chart3').getContext('2d');
+    const chart3 = new Chart(ctx3, {
+        type: 'pie',
+        data: {
+            labels: scenarios.map(s => `Scenario ${s.scenario}`),
+            datasets: [{
+                label: 'Profit (Cost 3) (SAR‏)',
+                data: scenarios.map(s => s.profit3),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(255, 159, 64, 0.5)',
+                    'rgba(255, 205, 86, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 205, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+</body>
+</html>
